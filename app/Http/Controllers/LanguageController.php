@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LanguageStoreRequest;
+use App\Http\Requests\LanguageUpdateRequest;
 use App\Models\Language;
 use Illuminate\Http\Request;
 
@@ -12,15 +14,39 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $data = Language::latest()->get();
+            return response()->json([
+                'data' => $data,
+                'status' => 'success',
+                'message' => 'Successfully get data!'
+            ],200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ],503);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LanguageStoreRequest $request)
     {
-        //
+        try {
+            $data = Language::create($request->all());
+            return response()->json([
+                'data' => $data,
+                'status' => 'success',
+                'message' => 'Successfully create data!'
+            ],201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ],503);
+        }   
     }
 
     /**
@@ -34,7 +60,7 @@ class LanguageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Language $language)
+    public function update(LanguageUpdateRequest $request, Language $language)
     {
         //
     }
